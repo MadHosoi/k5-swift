@@ -48,6 +48,12 @@ module.exports = {
     
         request(options, function (error, response, body) 
             {
+                if(error) {
+                    console.error(error);
+                }
+                else{
+                    console.log((new Date()).toString() + ": authenticate: " + JSON.stringify(response));
+                }
                 callback(error, response, body);
             }
         );
@@ -74,6 +80,12 @@ module.exports = {
             
         request(options, function (error, response, body) 
         {
+            if(error) {
+                console.error(error);
+            }
+            else{
+                console.log((new Date()).toString() + ": getcontainers: " + JSON.stringify(response));
+            }
             callback(error, response, body);
         });
     },
@@ -99,6 +111,12 @@ module.exports = {
             
         request(options, function (error, response, body) 
         {
+            if(error) {
+                console.error(error);
+            }
+            else{
+                console.log((new Date()).toString() + ": createcontainer: " + JSON.stringify(response));
+            }
             callback(error, response, body);
         });
     },
@@ -124,6 +142,12 @@ module.exports = {
             
         request(options, function (error, response, body) 
         {
+            if(error) {
+                console.error(error);
+            }
+            else{
+                console.log((new Date()).toString() + ": deletecontainer: " + JSON.stringify(response));
+            }
             callback(error, response, body);
         });
     }
