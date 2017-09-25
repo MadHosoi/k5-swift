@@ -1,5 +1,0 @@
-applications:
- - name: esobjectstorageservice
-memory: 256M
-disk_quota: 1G
-command: node index.js
