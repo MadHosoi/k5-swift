@@ -6,7 +6,7 @@
                 "request": "launch",
                 "name": "Launch Program",
                 "cwd": "${workspaceRoot}/app/",
-                "program": "index.js",
+                "program": "${workspaceRoot}/app/index.js",
                 "envFile": "${workspaceRoot}/.env"
             }
         ]
