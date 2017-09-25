@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const swift = require("./swift.js");
+const swift = require("./lib/swift.js");
 
 app.set('view engine', 'pug');
 
@@ -13,6 +13,7 @@ var pwd = process.env.K5PASSWORD || "";
 var proxy = process.env.HTTP_PROXY || "";
 
 app.get('/', function(req, res) {
+  var list = [];
   swift.authenticate(
       region, 
       contract, 
@@ -21,21 +22,43 @@ app.get('/', function(req, res) {
       pwd, 
       proxy,
       function(error, response, body){
+        var responsedata = {error, response, body};
+        list.push(responsedata);
         var token = response.headers['x-subject-token'];
         swift.getcontainers(
             token, 
             region, 
             projectid,
             proxy, 
-            function(error1, response1, body1){
-                res.render('main', {
-                    title: 'K5 Object Storage',
-                    message: 'Welcome to Fujitsu K5 Object Storage Service!!',
-                    error: JSON.stringify(error1),
-                    body: JSON.stringify(body1),
-                    response: JSON.stringify(response1)
+            function(error, response, body){
+              responsedata = {error, response, body};
+              list.push(responsedata);
+              swift.createcontainer(
+                token, 
+                region, 
+                projectid, 
+                "test",
+                proxy, 
+                function(error, response, body){
+                  responsedata = {error, response, body};
+                  list.push(responsedata);
+                  swift.deletecontainer(
+                    token, 
+                    region, 
+                    projectid, 
+                    "test",
+                    proxy, 
+                    function(error, response, body){
+                      responsedata = {error, response, body};
+                      list.push(responsedata);
+                      res.render('main', {
+                        title: 'K5 Object Storage',
+                        message: 'Welcome to Fujitsu K5 Object Storage Service!!',
+                        responses: list
+                      });
+                    });
                   });
-            });
+              });
   });
 });
 

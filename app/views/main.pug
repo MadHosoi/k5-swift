@@ -4,8 +4,7 @@ html
   body
     h1= message
     br
-    p= error
-    br
-    p= body
-    br
-    p= response
+    p= responses.length
+    ul
+      each val in responses
+        li= JSON.stringify(val.response)
