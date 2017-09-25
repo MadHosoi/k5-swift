@@ -77,5 +77,30 @@ module.exports = {
         {
             callback(error, response, body);
         });
+    },
+
+    createcontainer: function(token, region, projectid, container, proxy, callback){
+        const swift_url = 'https://objectstorage.' + region + '.cloud.global.fujitsu.com/v1/AUTH_' + projectid;
+        
+        var request = require("request");
+                
+        var options = { 
+            method: 'PUT',
+            url: swift_url + "/" + container,
+            headers: 
+            { 
+                'cache-control': 'no-cache',
+                'content-type': 'application/json',
+                'Accept':'application/json',
+                'X-Auth-Token': token
+            },
+            json: true,
+            proxy: proxy
+        };
+            
+        request(options, function (error, response, body) 
+        {
+            callback(error, response, body);
+        });
     }
 };
