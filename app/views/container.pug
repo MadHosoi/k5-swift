@@ -1,0 +1,9 @@
+html
+  head
+    title= title
+  body
+    h1= message
+    ul
+      each val in files
+        li
+          a(href="/container/" + containername + "/" + val.name)= val.name

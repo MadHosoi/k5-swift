@@ -3,8 +3,7 @@ html
     title= title
   body
     h1= message
-    br
-    p= responses.length
     ul
-      each val in responses
-        li= JSON.stringify(val.response)
+      each val in containers
+        li
+          a(href="/container/" + val.name)= val.name
