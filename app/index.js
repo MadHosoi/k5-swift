@@ -3,9 +3,15 @@ const session = require("express-session");
 
 const app = express();
 
+var busboy = require('connect-busboy');
+
+app.use(busboy()); 
+
 const swift = require("./lib/swift.js");
 
 app.use(session({secret: process.env.K5SECRET}));
+
+app.use(express.static(__dirname + '/public'));
 
 app.set('view engine', 'pug');
 
@@ -89,19 +95,68 @@ app.get('/container/:name', function(req, res){
 
 app.get('/container/:name/:file', function(req, res){
   sess = req.session;
-  swift.getfile(
-    sess.token, 
-    region, 
-    projectid,
-    req.params.name,
-    req.params.file,
-    proxy, 
-    function(error, response){
-      res.mimetype = 'application/octet-stream';
-      res.attachment = req.params.file;
-    },
-    res
-  );
+  if (req.query.delete !== undefined && req.query.delete === ""){
+    swift.deletefile(
+      sess.token, 
+      region, 
+      projectid,
+      req.params.name,
+      req.params.file,
+      proxy, 
+      function(error, response){
+        res.redirect('/container/' + req.params.name);
+      }
+    );
+  }
+  else{
+    swift.getfile(
+      sess.token, 
+      region, 
+      projectid,
+      req.params.name,
+      req.params.file,
+      proxy, 
+      function(error, response){
+        res.mimetype = 'application/octet-stream';
+        res.attachment = req.params.file;
+      },
+      res
+    );
+  }
+});
+
+app.get('/upload/:name', function(req, res){
+  res.render('upload', {
+    title: 'K5 Object Storage - ' + req.params.name,
+    containername: req.params.name,
+    message: 'Select the file to upload to the container ' + req.params.name,
+  });
+});
+
+app.post('/upload/:name', function(req, res){
+  sess = req.session;  
+  
+  req.pipe(req.busboy);
+  req.busboy.on('file', function (fieldname, file, filename) {
+
+      console.log("Uploading: " + filename); 
+      swift.setfile(
+        sess.token, 
+        region,
+        projectid,
+        req.params.name,
+        filename,
+        proxy,
+        function(error, response){
+          res.redirect('/container/' + req.params.name);
+        },
+        file
+      );
+  });
+ /*
+  
+  
+  */
 });
 
 app.listen(process.env.PORT || 3000, function () {

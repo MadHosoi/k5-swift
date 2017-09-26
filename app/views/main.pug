@@ -1,9 +1,10 @@
 html
   head
     title= title
+    link(rel="stylesheet", href="/style/style.css")
   body
     h1= message
     ul
       each val in containers
         li
-          a(href="/container/" + val.name)= val.name
+          a(href="/container/" + val.name class="blue")= val.name

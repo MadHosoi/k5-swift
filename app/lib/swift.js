@@ -212,5 +212,65 @@ module.exports = {
             }
             callback(error, response, body);
         }).pipe(stream);
-    }
+    },
+
+    setfile: function(token, region, projectid, container, file, proxy, callback, stream){
+        const swift_url = 'https://objectstorage.' + region + '.cloud.global.fujitsu.com/v1/AUTH_' + projectid;
+        
+        var request = require("request");
+                
+        var options = { 
+            method: 'PUT',
+            url: swift_url + '/' + container + '/' + file,
+            headers: 
+            { 
+                'X-Auth-Token': token,
+                'content-type': 'application/octet-stream'
+            },
+            proxy: proxy,
+            data: stream
+        };
+            
+        request(options, function (error, response, body) 
+        {
+            if(error) {
+                console.error(error);
+            }
+            else{
+                console.log((new Date()).toString() + ": setfile: " + JSON.stringify(response));
+            }
+            callback(error, response, body);
+        });
+    },
+
+    deletefile: function(token, region, projectid, container, file, proxy, callback){
+        const swift_url = 'https://objectstorage.' + region + '.cloud.global.fujitsu.com/v1/AUTH_' + projectid;
+        
+        var request = require("request");
+                
+        var options = { 
+            method: 'DELETE',
+            url: swift_url + "/" + container + "/" + file,
+            headers: 
+            { 
+                'cache-control': 'no-cache',
+                'content-type': 'application/json',
+                'Accept':'application/json',
+                'X-Auth-Token': token
+            },
+            json: true,
+            proxy: proxy
+        };
+            
+        request(options, function (error, response, body) 
+        {
+            if(error) {
+                console.error(error);
+            }
+            else{
+                console.log((new Date()).toString() + ": deletefile: " + JSON.stringify(response));
+            }
+            callback(error, response, body);
+        });
+    },
 };

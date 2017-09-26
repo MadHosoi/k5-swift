@@ -1,9 +1,16 @@
 html
   head
     title= title
+    link(rel="stylesheet", href="/style/style.css")
   body
     h1= message
+
     ul
+      li
+        a(href="/" class="orange")= "Go back"
       each val in files
         li
-          a(href="/container/" + containername + "/" + val.name)= val.name
+          a(href="/container/" + containername + "/" + val.name class="blue downloadicon")= val.name
+          a(href="/container/" + containername + "/" + val.name + "?delete" class="delete" title="Delete")= "D"
+      li
+        a(href="/upload/" + containername class="green")= "New file"
