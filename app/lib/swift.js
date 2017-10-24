@@ -227,20 +227,21 @@ module.exports = {
                 'X-Auth-Token': token,
                 'content-type': 'application/octet-stream'
             },
-            proxy: proxy,
-            data: stream
+            proxy: proxy
         };
             
-        request(options, function (error, response, body) 
+        var req = request(options, function (error, response, body) 
         {
             if(error) {
                 console.error(error);
             }
             else{
-                console.log((new Date()).toString() + ": setfile: " + JSON.stringify(response));
+                if (process.env.LOG == 'debug')
+                    console.log((new Date()).toString() + ": setfile: " + JSON.stringify(response));
             }
             callback(error, response, body);
         });
+        stream.pipe(req);
     },
 
     deletefile: function(token, region, projectid, container, file, proxy, callback){
