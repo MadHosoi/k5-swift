@@ -117,14 +117,16 @@ app.get('/container/:name/:file', function(req, res){
       req.params.file,
       proxy, 
       function(error, response){
-        res.mimetype = 'application/octet-stream';
+        //res.mimetype = response.mimetype;
+        //res.mimetype = 'application/octet-stream';
         res.attachment = req.params.file;
+        res.end();
       },
       res
     );
   }
 });
-
+/*
 app.get('/upload/:name', function(req, res){
   res.render('upload', {
     title: 'K5 Object Storage - ' + req.params.name,
@@ -132,14 +134,16 @@ app.get('/upload/:name', function(req, res){
     message: 'Select the file to upload to the container ' + req.params.name,
   });
 });
-
+*/
+/*
 app.post('/upload/:name', function(req, res){
   sess = req.session;  
   
   req.pipe(req.busboy);
-  req.busboy.on('file', function (fieldname, file, filename) {
+  req.busboy.on('file', function(fieldname, file, filename) {
 
-      console.log("Uploading: " + filename); 
+      console.log("File received: " + filename); 
+      
       swift.setfile(
         sess.token, 
         region,
@@ -148,17 +152,23 @@ app.post('/upload/:name', function(req, res){
         filename,
         proxy,
         function(error, response){
-          res.redirect('/container/' + req.params.name);
+          console.log("File uploaded: " + filename);
+          res.render('uploadresult', {
+            title: 'K5 Object Storage - ' + req.params.name,
+            containername: req.params.name,
+            message: 'The file uploaded to the container ' + req.params.name,
+          });
         },
         file
       );
-  });
- /*
-  
-  
-  */
-});
 
+  });
+
+  req.busboy.on('finish', function() {
+    res.send("That's all folks!");
+  });
+});
+*/
 app.listen(process.env.PORT || 3000, function () {
   console.log('App listening on port '+ (process.env.PORT !== undefined ? process.env.PORT : 3000) +'');
 });

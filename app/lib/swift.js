@@ -52,7 +52,8 @@ module.exports = {
                     console.error(error);
                 }
                 else{
-                    console.log((new Date()).toString() + ": authenticate: " + JSON.stringify(response));
+                    if (process.env.LOG == 'debug')
+                        console.log((new Date()).toString() + ": authenticate: " + JSON.stringify(response));
                 }
                 callback(error, response, body);
             }
@@ -84,7 +85,8 @@ module.exports = {
                 console.error(error);
             }
             else{
-                console.log((new Date()).toString() + ": getcontainers: " + JSON.stringify(response));
+                if (process.env.LOG == 'debug')
+                    console.log((new Date()).toString() + ": getcontainers: " + JSON.stringify(response));
             }
             callback(error, response, body);
         });
@@ -115,7 +117,8 @@ module.exports = {
                 console.error(error);
             }
             else{
-                console.log((new Date()).toString() + ": createcontainer: " + JSON.stringify(response));
+                if (process.env.LOG == 'debug')
+                    console.log((new Date()).toString() + ": createcontainer: " + JSON.stringify(response));
             }
             callback(error, response, body);
         });
@@ -146,7 +149,8 @@ module.exports = {
                 console.error(error);
             }
             else{
-                console.log((new Date()).toString() + ": deletecontainer: " + JSON.stringify(response));
+                if (process.env.LOG == 'debug')
+                    console.log((new Date()).toString() + ": deletecontainer: " + JSON.stringify(response));
             }
             callback(error, response, body);
         });
@@ -177,7 +181,8 @@ module.exports = {
                 console.error(error);
             }
             else{
-                console.log((new Date()).toString() + ": getfiles: " + JSON.stringify(response));
+                if (process.env.LOG == 'debug')
+                    console.log((new Date()).toString() + ": getfiles: " + JSON.stringify(response));
             }
             callback(error, response, body);
         });
@@ -194,8 +199,8 @@ module.exports = {
             headers: 
             { 
                 'cache-control': 'no-cache',
-                'content-type': 'application/json',
-                'Accept':'application/json',
+                //'content-type': 'application/json',
+                //'Accept':'application/json',
                 'X-Auth-Token': token
             },
             json: true,
@@ -208,7 +213,8 @@ module.exports = {
                 console.error(error);
             }
             else{
-                console.log((new Date()).toString() + ": getfile: " + JSON.stringify(response));
+                if (process.env.LOG == 'debug')
+                    console.log((new Date()).toString() + ": getfile: " + JSON.stringify(response));
             }
             callback(error, response, body);
         }).pipe(stream);
@@ -269,7 +275,8 @@ module.exports = {
                 console.error(error);
             }
             else{
-                console.log((new Date()).toString() + ": deletefile: " + JSON.stringify(response));
+                if (process.env.LOG == 'debug')
+                    console.log((new Date()).toString() + ": deletefile: " + JSON.stringify(response));
             }
             callback(error, response, body);
         });
