@@ -126,7 +126,7 @@ app.get('/container/:name/:file', function(req, res){
     );
   }
 });
-/*
+
 app.get('/upload/:name', function(req, res){
   res.render('upload', {
     title: 'K5 Object Storage - ' + req.params.name,
@@ -134,8 +134,8 @@ app.get('/upload/:name', function(req, res){
     message: 'Select the file to upload to the container ' + req.params.name,
   });
 });
-*/
-/*
+
+
 app.post('/upload/:name', function(req, res){
   sess = req.session;  
   
@@ -153,11 +153,7 @@ app.post('/upload/:name', function(req, res){
         proxy,
         function(error, response){
           console.log("File uploaded: " + filename);
-          res.render('uploadresult', {
-            title: 'K5 Object Storage - ' + req.params.name,
-            containername: req.params.name,
-            message: 'The file uploaded to the container ' + req.params.name,
-          });
+         
         },
         file
       );
@@ -165,10 +161,14 @@ app.post('/upload/:name', function(req, res){
   });
 
   req.busboy.on('finish', function() {
-    res.send("That's all folks!");
+    res.render('uploadresult', {
+      title: 'K5 Object Storage - ' + req.params.name,
+      containername: req.params.name,
+      message: 'The file uploaded to the container ' + req.params.name,
+    });
   });
 });
-*/
+
 app.listen(process.env.PORT || 3000, function () {
   console.log('App listening on port '+ (process.env.PORT !== undefined ? process.env.PORT : 3000) +'');
 });
