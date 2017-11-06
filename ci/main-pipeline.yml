@@ -11,11 +11,8 @@ resources:
 - name: k5-swift
   type: git
   source:
-    source:
-      uri: {{github-uri}}
-      branch: {{github-branch}}
-      username: {{github-username}}
-      password: {{github-password}}
+    uri: {{github-uri}}
+    branch: {{github-branch}}
 
 - name: madhosoi-slack
   type: slack-notification
@@ -40,8 +37,8 @@ jobs:
     trigger: true
   - put: staging-app
     params:
-      manifest: assets/cf-manifest.yml
-      path: app
+      manifest: k5-swift/ci/assets/cf-manifest.yml
+      path: k5-swift/app
       environment-variables:
         K5CONTRACT: {{swift-K5CONTRACT}}
         K5PASSWORD: {{swift-K5PASSWORD}}
