@@ -49,6 +49,7 @@ jobs:
   - put: madhosoi-slack
     params:
       text: K5-swift uploaded!
+      attachments_file: /tmp/build/put/k5-swift/ci/assets/cf-manifest.yml
       channel: "#general"
       username: madhosoibot
       icon_url: http://cl.ly/image/3e1h0H3H2s0P/concourse-logo.png
