@@ -1,0 +1,57 @@
+---
+
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+    tag: latest
+
+resources:
+- name: k5-swift
+  type: git
+  source:
+    source:
+      uri: {{github-uri}}
+      branch: {{github-branch}}
+
+- name: madhosoi-slack
+  type: slack-notification
+  source:
+    url: {{slack-url}}
+
+- name: staging-app
+  type: cf
+  source:
+      api: {{cf-api}}
+      username: {{cf-username}}
+      password: {{cf-password}}
+      organization: {{cf-org}}
+      space: {{cf-space}}
+      skip_cert_check: true
+
+jobs:
+- name: job-deploy-to-CF
+  public: true
+  plan:
+  - get: k5-swift
+    trigger: true
+  - put: staging-app
+    params:
+      manifest: assets/cf-manifest.yml
+      path: app
+      environment-variables:
+        K5CONTRACT: {{swift-K5CONTRACT}}
+        K5PASSWORD: {{swift-K5PASSWORD}}
+        K5PROJECTID: {{swift-K5PROJECTID}}
+        K5REGION: {{swift-K5REGION}}
+        K5SECRET: {{swift-K5SECRET}}
+        K5USER: {{swift-K5USER}}
+
+- name: slack-notification
+  - put: madhosoi-slack
+    params:
+      text: K5-swift uploaded!
+      channel: "#general"
+      username: madhosoibot
+      icon_url: http://cl.ly/image/3e1h0H3H2s0P/concourse-logo.png
