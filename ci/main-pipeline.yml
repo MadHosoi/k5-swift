@@ -31,7 +31,7 @@ resources:
       skip_cert_check: true
 
 jobs:
-- name: job-deploy-to-CF
+- name: deploy-to-K5CF
   public: true
   plan:
   - get: k5-swift
@@ -47,8 +47,6 @@ jobs:
         K5REGION: {{swift-K5REGION}}
         K5SECRET: {{swift-K5SECRET}}
         K5USER: {{swift-K5USER}}
-
-- name: slack-notification
   - put: madhosoi-slack
     params:
       text: K5-swift uploaded!
