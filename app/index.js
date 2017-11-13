@@ -38,7 +38,7 @@ app.get('/', function(req, res){
       function(error, response, body){
         //var responsedata = {error, response, body};
         res.render('main', {
-          title: 'K5 Object Storage, FUJITSU FORUM 2017',
+          title: 'K5 Object Storage, FUJITSU DEMO',
           message: 'Welcome to Fujitsu K5 Object Storage Service!!',
           containers: body
         });         
